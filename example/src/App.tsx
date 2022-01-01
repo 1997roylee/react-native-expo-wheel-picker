@@ -1,31 +1,37 @@
-import * as React from 'react';
+import React, { useCallback, useState } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-expo-wheel-picker';
+import { View, Text } from 'react-native';
+import WheelPicker from '../../src';
+
+function createDemoSet(n: number) {
+  const items = [];
+  for (let i = 0; i < n; i++) {
+    items.push({
+      id: i,
+      name: `Item ${i}`,
+      value: i,
+    });
+  }
+  return items;
+}
+
+const example = createDemoSet(50);
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  const [value, setValue] = useState(10);
+  const handleChange = useCallback((index) => {
+    console.log('change', index);
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View>
+      <Text>Demo</Text>
+      <WheelPicker
+        numberOfVisibleRows={7}
+        value={value}
+        onChange={handleChange}
+        items={example}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
