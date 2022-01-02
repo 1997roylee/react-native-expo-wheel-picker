@@ -48,11 +48,6 @@ export default function App() {
     </View>
   );
 }
-
-
-// ...
-
-const result = await multiply(3, 7);
 ```
 
 ## Contributing
