@@ -14,7 +14,7 @@ npm install react-native-expo-wheel-picker
 import React, { useCallback, useState } from 'react';
 
 import { View, Text } from 'react-native';
-import WheelPicker from '../../src';
+import WheelPicker from 'react-native-expo-wheel-picker';
 
 function createDemoSet(n: number) {
   const items = [];

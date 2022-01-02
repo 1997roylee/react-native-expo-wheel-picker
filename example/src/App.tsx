@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { View, Text } from 'react-native';
+import { View, Text, Modal } from 'react-native';
 import WheelPicker from '../../src';
 
 function createDemoSet(n: number) {
@@ -8,7 +8,7 @@ function createDemoSet(n: number) {
   for (let i = 0; i < n; i++) {
     items.push({
       id: i,
-      name: `Item ${i}`,
+      label: `Item ${i}`,
       value: i,
     });
   }
@@ -18,20 +18,24 @@ function createDemoSet(n: number) {
 const example = createDemoSet(50);
 
 export default function App() {
-  const [value, _] = useState(10);
+  const [value] = useState(10);
   const handleChange = useCallback((index) => {
     console.log('change', index);
   }, []);
 
   return (
     <View>
-      <Text>Demo</Text>
-      <WheelPicker
-        numberOfVisibleRows={7}
-        value={value}
-        onChange={handleChange}
-        items={example}
-      />
+      <Modal visible={true} presentationStyle="formSheet">
+        <Text>Demo</Text>
+        <WheelPicker
+          numberOfVisibleRows={5}
+          value={value}
+          onChange={handleChange}
+          items={example}
+          labelAttribute="label"
+          valueAttribute="value"
+        />
+      </Modal>
     </View>
   );
 }

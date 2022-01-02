@@ -25,10 +25,11 @@ const { width } = Dimensions.get('window');
 interface IWheelPickerProps {
   items: any[];
   onChange: (index: number) => void;
-  numberOfVisibleRows: number;
+  numberOfVisibleRows?: number;
   value: any;
   labelAttribute?: string;
   valueAttribute?: string;
+  debug?: boolean;
 }
 
 function WheelPicker(props: IWheelPickerProps) {
@@ -44,9 +45,10 @@ function WheelPicker(props: IWheelPickerProps) {
     items: propItems,
     numberOfVisibleRows = 5,
     value,
-    onChange = () => { },
+    onChange = () => {},
     valueAttribute = 'value',
     labelAttribute = 'name',
+    debug = false,
   } = props;
 
   const { items, defaultIndex, height } = usePresenter({
@@ -56,6 +58,18 @@ function WheelPicker(props: IWheelPickerProps) {
     labelAttribute,
     numberOfVisibleRows,
   });
+
+  if (debug)
+    console.log('WheelPicker', {
+      value,
+      items,
+      defaultIndex,
+      height,
+      propItems,
+      valueAttribute,
+      labelAttribute,
+      numberOfVisibleRows,
+    });
 
   const renderItem = useCallback(
     ({ item, index }) => (
