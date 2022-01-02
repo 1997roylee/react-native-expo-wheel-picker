@@ -27,6 +27,8 @@ interface IWheelPickerProps {
   onChange: (index: number) => void;
   numberOfVisibleRows: number;
   value: any;
+  labelAttribute?: string;
+  valueAttribute?: string;
 }
 
 function WheelPicker(props: IWheelPickerProps) {
@@ -42,14 +44,16 @@ function WheelPicker(props: IWheelPickerProps) {
     items: propItems,
     numberOfVisibleRows = 5,
     value,
-    onChange = () => {},
+    onChange = () => { },
+    valueAttribute = 'value',
+    labelAttribute = 'name',
   } = props;
 
   const { items, defaultIndex, height } = usePresenter({
     initialValue: value,
     items: propItems,
-    valueAttribute: 'value',
-    labelAttribute: 'name',
+    valueAttribute,
+    labelAttribute,
     numberOfVisibleRows,
   });
 
