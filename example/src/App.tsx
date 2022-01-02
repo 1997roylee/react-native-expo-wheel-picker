@@ -18,7 +18,7 @@ function createDemoSet(n: number) {
 const example = createDemoSet(50);
 
 export default function App() {
-  const [value, setValue] = useState(10);
+  const [value, _] = useState(10);
   const handleChange = useCallback((index) => {
     console.log('change', index);
   }, []);

@@ -3,14 +3,21 @@ import findIndex from 'lodash/findIndex';
 import isUndefined from 'lodash/isUndefined';
 import { itemHeight } from './constant';
 
+interface IProps {
+  initialValue: any | undefined;
+  items: any[];
+  valueAttribute: string;
+  labelAttribute: string;
+  numberOfVisibleRows: number;
+}
+
 export default function usePresenter({
   initialValue,
-  // selectedValue,
   items: propItems,
   valueAttribute,
   labelAttribute,
   numberOfVisibleRows,
-}) {
+}: IProps) {
   // const value = isUndefined(selectedValue) ? initialValue : selectedValue;
 
   const items = propItems.map((item: any) => {

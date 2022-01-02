@@ -11,7 +11,7 @@ import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import Item from './Item';
 import usePresenter from './usePresenter';
 import Styles from './index.style';
@@ -157,7 +157,7 @@ function WheelPicker(props: IWheelPickerProps) {
         decelerationRate={Platform.OS === 'ios' ? 'normal' : 0.98}
         onMomentumScrollEnd={onValueChange}
       />
-      <LinearGradient
+      {/* <LinearGradient
         // Background Linear Gradient
         colors={['rgba(255,255,255,0.8)', 'rgba(255, 255, 255, 0)']}
         style={Styles.fixedTop}
@@ -166,7 +166,7 @@ function WheelPicker(props: IWheelPickerProps) {
         // Background Linear Gradient
         colors={['rgba(255, 255, 255, 0)', 'rgba(255,255,255,.8)']}
         style={Styles.fixedBottom}
-      />
+      /> */}
       {separators}
     </View>
   );
