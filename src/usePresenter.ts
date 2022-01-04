@@ -1,4 +1,5 @@
 // src/usePresenter.ts
+import { useCallback, useState } from 'react';
 import findIndex from 'lodash/findIndex';
 import isUndefined from 'lodash/isUndefined';
 import { itemHeight } from './constant';
@@ -18,8 +19,6 @@ export default function usePresenter({
   labelAttribute,
   numberOfVisibleRows,
 }: IProps) {
-  // const value = isUndefined(selectedValue) ? initialValue : selectedValue;
-
   const items = propItems.map((item: any) => {
     return {
       value: item[valueAttribute],
@@ -27,15 +26,29 @@ export default function usePresenter({
     };
   });
 
+  const defaultIndex = isUndefined(initialValue)
+    ? 0
+    : findIndex(items, { value: initialValue });
+
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
+
+  const onValueChange = useCallback(
+    (event) =>
+      setCurrentIndex(
+        Math.floor(event.nativeEvent.contentOffset.y / itemHeight)
+      ),
+    []
+  );
+
   const getRowItemByIndex = (index: number) => {
     return items[index];
   };
 
   return {
     items,
-    defaultIndex: isUndefined(initialValue)
-      ? 0
-      : findIndex(items, { value: initialValue }),
+    onValueChange,
+    currentIndex,
+    defaultIndex,
     getRowItemByIndex,
     height: numberOfVisibleRows * itemHeight,
   };

@@ -1,12 +1,6 @@
 // src/WheelPicker.tsx
-import React, {
-  useCallback,
-  useRef,
-  useMemo,
-  useEffect,
-  useState,
-} from 'react';
-import { View, FlatList, Platform, Dimensions, ViewStyle } from 'react-native';
+import React, { useCallback, useRef, useMemo, useEffect } from 'react';
+import { View, FlatList, Dimensions, ViewStyle } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -39,7 +33,7 @@ function WheelPicker(props: IWheelPickerProps) {
     offset.value = e.contentOffset.y;
   });
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
 
   const {
     items: propItems,
@@ -51,13 +45,14 @@ function WheelPicker(props: IWheelPickerProps) {
     debug = false,
   } = props;
 
-  const { items, defaultIndex, height } = usePresenter({
-    initialValue: value,
-    items: propItems,
-    valueAttribute,
-    labelAttribute,
-    numberOfVisibleRows,
-  });
+  const { items, defaultIndex, height, currentIndex, onValueChange } =
+    usePresenter({
+      initialValue: value,
+      items: propItems,
+      valueAttribute,
+      labelAttribute,
+      numberOfVisibleRows,
+    });
 
   if (debug)
     console.log('WheelPicker', {
@@ -124,14 +119,6 @@ function WheelPicker(props: IWheelPickerProps) {
     [height]
   );
 
-  const onValueChange = useCallback(
-    (event) =>
-      setCurrentIndex(
-        Math.floor(event.nativeEvent.contentOffset.y / itemHeight)
-      ),
-    []
-  );
-
   useEffect(() => {
     setTimeout(() => {
       scrollToOffset(defaultIndex, true);
@@ -160,7 +147,6 @@ function WheelPicker(props: IWheelPickerProps) {
         ref={scrollView}
         height={height}
         data={items}
-        // onLayout={getLayout}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={100}
         initialNumToRender={8}
@@ -169,10 +155,10 @@ function WheelPicker(props: IWheelPickerProps) {
         renderItem={renderItem}
         snapToOffsets={snapToOffsets}
         keyExtractor={(_, index) => `Item_${index}`}
-        // initialScrollIndex={10}
         contentContainerStyle={contentContainerStyle}
         snapToInterval={itemHeight}
-        decelerationRate={Platform.OS === 'ios' ? 'normal' : 0.98}
+        decelerationRate={'fast'}
+        // decelerationRate={Platform.OS === 'ios' ? 'normal' : 0.98}
         onMomentumScrollEnd={onValueChange}
       />
       {/* <LinearGradient
