@@ -32,13 +32,9 @@ export default function usePresenter({
 
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
 
-  const onValueChange = useCallback(
-    (event) =>
-      setCurrentIndex(
-        Math.floor(event.nativeEvent.contentOffset.y / itemHeight)
-      ),
-    []
-  );
+  const onValueChange = useCallback((event) => {
+    setCurrentIndex(Math.floor(event.nativeEvent.contentOffset.y / itemHeight));
+  }, []);
 
   const getRowItemByIndex = (index: number) => {
     return items[index];
@@ -48,7 +44,7 @@ export default function usePresenter({
     items,
     onValueChange,
     currentIndex,
-    defaultIndex,
+    defaultIndex: defaultIndex > -1 ? defaultIndex : 0,
     getRowItemByIndex,
     height: numberOfVisibleRows * itemHeight,
   };

@@ -1,6 +1,6 @@
 // src/WheelPicker.tsx
 import React, { useCallback, useRef, useMemo, useEffect } from 'react';
-import { View, FlatList, Dimensions, ViewStyle } from 'react-native';
+import { View, FlatList, Dimensions, ViewStyle, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -32,8 +32,6 @@ function WheelPicker(props: IWheelPickerProps) {
   const scrollHandler = useAnimatedScrollHandler((e) => {
     offset.value = e.contentOffset.y;
   });
-
-  // const [currentIndex, setCurrentIndex] = useState(0);
 
   const {
     items: propItems,
@@ -95,6 +93,7 @@ function WheelPicker(props: IWheelPickerProps) {
   const separators = useMemo(() => {
     return (
       <View
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           position: 'absolute',
           justifyContent: 'center',
@@ -113,14 +112,19 @@ function WheelPicker(props: IWheelPickerProps) {
       width,
       alignItems: 'center',
       paddingVertical: height / 2 - itemHeight / 2,
-      // paddingTop: (maxDisplaysOnViewport / 2 - 1) * itemHeight,
-      // paddingBottom: (maxDisplaysOnViewport / 2 - 1) * itemHeight,
     }),
     [height]
   );
 
+  const onMomentumScrollEndAndroid = (index: number) => {
+    if (Platform.OS === 'android' && currentIndex !== index) {
+    }
+  };
+
   useEffect(() => {
     setTimeout(() => {
+      // console.log(defaultIndex);
+      onMomentumScrollEndAndroid(defaultIndex);
       scrollToOffset(defaultIndex, true);
     }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -157,8 +161,7 @@ function WheelPicker(props: IWheelPickerProps) {
         keyExtractor={(_, index) => `Item_${index}`}
         contentContainerStyle={contentContainerStyle}
         snapToInterval={itemHeight}
-        decelerationRate={'fast'}
-        // decelerationRate={Platform.OS === 'ios' ? 'normal' : 0.98}
+        decelerationRate={0.99}
         onMomentumScrollEnd={onValueChange}
       />
       {/* <LinearGradient

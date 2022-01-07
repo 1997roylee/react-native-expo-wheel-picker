@@ -15,10 +15,10 @@ function createDemoSet(n: number) {
   return items;
 }
 
-const example = createDemoSet(50);
+const example = createDemoSet(2);
 
 export default function App() {
-  const [value] = useState(10);
+  const [value] = useState(1);
   const handleChange = useCallback((index) => {
     console.log('change', index);
   }, []);
