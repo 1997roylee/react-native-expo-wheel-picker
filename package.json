@@ -1,6 +1,6 @@
 {
   "name": "react-native-expo-wheel-picker",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "picker",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
