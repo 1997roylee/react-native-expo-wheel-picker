@@ -15,7 +15,7 @@ function createDemoSet(n: number) {
   return items;
 }
 
-const example = createDemoSet(2);
+const example = createDemoSet(50);
 
 export default function App() {
   const [value] = useState(1);

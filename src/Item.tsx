@@ -5,6 +5,7 @@ import { View, Text, TextStyle } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
+  useDerivedValue,
 } from 'react-native-reanimated';
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -33,9 +34,24 @@ function Item(props: IItemProps) {
   } = props;
   const itemOffset = index * itemHeight;
 
+  const udv = useDerivedValue(() => {
+    if (
+      offset.value >= (index - 3) * itemHeight &&
+      offset.value <= (index + 3) * itemHeight
+    ) {
+      return offset.value;
+    } else if (offset.value < (index - 3) * itemHeight) {
+      return 0;
+    } else if (offset.value > (index + 3) * itemHeight) {
+      return 0;
+    }
+
+    return 0;
+  });
+
   const animatedColorStyle = useAnimatedStyle(() => {
     const color = interpolateColor(
-      offset.value,
+      udv.value,
       [itemOffset - itemHeight, itemOffset, itemOffset + itemHeight],
       [inactiveColor, activeColor, inactiveColor]
     );

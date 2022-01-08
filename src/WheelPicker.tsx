@@ -5,7 +5,6 @@ import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-// import { LinearGradient } from 'expo-linear-gradient';
 import Item from './Item';
 import usePresenter from './usePresenter';
 import Styles from './index.style';
@@ -23,7 +22,6 @@ interface IWheelPickerProps {
   value: any;
   labelAttribute?: string;
   valueAttribute?: string;
-  debug?: boolean;
 }
 
 function WheelPicker(props: IWheelPickerProps) {
@@ -40,25 +38,12 @@ function WheelPicker(props: IWheelPickerProps) {
     onChange = () => {},
     valueAttribute = 'value',
     labelAttribute = 'name',
-    debug = false,
   } = props;
 
   const { items, defaultIndex, height, currentIndex, onValueChange } =
     usePresenter({
       initialValue: value,
       items: propItems,
-      valueAttribute,
-      labelAttribute,
-      numberOfVisibleRows,
-    });
-
-  if (debug)
-    console.log('WheelPicker', {
-      value,
-      items,
-      defaultIndex,
-      height,
-      propItems,
       valueAttribute,
       labelAttribute,
       numberOfVisibleRows,
@@ -78,7 +63,7 @@ function WheelPicker(props: IWheelPickerProps) {
   );
 
   useEffect(() => {
-    onChange(currentIndex);
+    if (currentIndex !== defaultIndex) onChange(currentIndex);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
@@ -131,13 +116,13 @@ function WheelPicker(props: IWheelPickerProps) {
   }, [defaultIndex]);
 
   const scrollToOffset = (index: number, animated: boolean) => {
-    if (isFunction((scrollView.current as any).scrollToOffset)) {
-      (scrollView.current as any).scrollToOffset({
+    if (isFunction((scrollView.current as any)?.scrollToOffset)) {
+      (scrollView.current as any)?.scrollToOffset({
         offset: index * itemHeight,
         animated,
       });
     } else {
-      (scrollView.current?.getNode() as any).scrollToOffset({
+      (scrollView.current?.getNode() as any)?.scrollToOffset({
         offset: index * itemHeight,
         animated,
       });
@@ -153,7 +138,7 @@ function WheelPicker(props: IWheelPickerProps) {
         data={items}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={100}
-        initialNumToRender={8}
+        initialNumToRender={numberOfVisibleRows}
         onScroll={scrollHandler}
         pagingEnabled
         renderItem={renderItem}
@@ -164,16 +149,6 @@ function WheelPicker(props: IWheelPickerProps) {
         decelerationRate={0.99}
         onMomentumScrollEnd={onValueChange}
       />
-      {/* <LinearGradient
-        // Background Linear Gradient
-        colors={['rgba(255,255,255,0.8)', 'rgba(255, 255, 255, 0)']}
-        style={Styles.fixedTop}
-      />
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255,255,255,.8)']}
-        style={Styles.fixedBottom}
-      /> */}
       {separators}
     </View>
   );
